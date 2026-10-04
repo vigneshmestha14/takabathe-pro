@@ -5,5 +5,5 @@ import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: './', // For GitHub Pages compatibility
+  base: '/takabathe-pro/', // Explicit GitHub Pages subpath
 });
