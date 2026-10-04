@@ -1,0 +1,17 @@
+{
+  "short_name": "TAKABATHE",
+  "name": "TAKABATHE — Fresh Fish Delivered by the KG",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#06111e",
+  "theme_color": "#06111e",
+  "display": "standalone",
+  "orientation": "portrait"
+}
