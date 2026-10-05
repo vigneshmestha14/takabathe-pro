@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TAKABATHE</string>
+    <string name="title_activity_main">TAKABATHE</string>
+    <string name="package_name">com.takabathe.app</string>
+    <string name="custom_url_scheme">com.takabathe.app</string>
+</resources>

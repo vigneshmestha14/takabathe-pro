@@ -1,0 +1,14 @@
+{
+  "appId": "com.takabathe.app",
+  "appName": "TAKABATHE",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "backgroundColor": "#07171d"
+  }
+}
