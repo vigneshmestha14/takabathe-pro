@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Product } from '../data/mockData';
-import { Check, Eye } from 'lucide-react';
+import { Check, Eye, Anchor } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -16,7 +16,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const isFish = product.category === 'fish';
   const weightSteps = product.weightSteps || [0.5, 1.0, 1.5, 2.0, 2.5, 3.0];
   
-  const [selectedWeightIndex, setSelectedWeightIndex] = useState<number>(1); // Default 1.0 KG
+  const [selectedWeightIndex, setSelectedWeightIndex] = useState<number>(1);
   const [selectedCut, setSelectedCut] = useState<string>(
     product.cutOptions ? product.cutOptions[0] : 'Whole Cleaned'
   );
@@ -32,7 +32,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="flex flex-col rounded-[18px] bg-white/85 p-3.5 ring-1 ring-[#0e2a33]/10 shadow-[0_1px_2px_rgba(14,42,51,.06)] backdrop-blur-xl transition-all hover:bg-white">
+    <div className="flex flex-col rounded-3xl bg-slate-900/90 p-4 border border-white/10 shadow-xl backdrop-blur-xl transition-all hover:border-cyan-500/40">
       
       {/* Top Details Row */}
       <div className="flex gap-3">
@@ -40,7 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Photo Container */}
         <div
           onClick={() => onQuickView(product)}
-          className="relative grid size-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-[#f1f5f9] outline outline-black/5 cursor-pointer group"
+          className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-slate-950 border border-white/10 cursor-pointer group"
         >
           <img
             src={product.image}
@@ -48,52 +48,70 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             loading="lazy"
             className="size-full object-cover group-hover:scale-105 transition-transform"
           />
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-            <Eye className="size-5 text-white" />
+          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+            <Eye className="size-5 text-cyan-300" />
           </div>
+
+          {/* Local Name Badge on Image */}
+          {product.localName && (
+            <span className="absolute bottom-1.5 left-1.5 right-1.5 px-1.5 py-0.5 rounded-lg bg-slate-950/90 text-center font-display text-[10px] font-black text-amber-300 border border-amber-500/30">
+              {product.localName}
+            </span>
+          )}
         </div>
 
         {/* Info */}
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-start justify-between">
-            <h3
-              onClick={() => onQuickView(product)}
-              className="font-display text-[15px] leading-tight font-semibold text-[#0e2a33] cursor-pointer hover:text-[#e05638]"
-            >
-              {product.name}
-            </h3>
+            <div>
+              <h3
+                onClick={() => onQuickView(product)}
+                className="font-display text-base font-bold text-slate-100 cursor-pointer hover:text-cyan-300 transition-colors line-clamp-1"
+              >
+                {product.name}
+              </h3>
+              {product.localName && (
+                <span className="text-[11px] font-extrabold text-amber-400 block -mt-0.5">
+                  ({product.localName})
+                </span>
+              )}
+            </div>
           </div>
 
-          <p className="mt-0.5 text-[12px] text-[#0e2a33]/65 line-clamp-2">
+          <p className="text-xs text-slate-400 line-clamp-2">
             {product.description}
           </p>
 
           {/* Price Tag */}
-          <div className="mt-2 inline-flex items-center gap-1 rounded-md bg-[#e05638]/10 px-2 py-0.5 ring-1 ring-[#e05638]/25">
-            <span className="font-display text-[15px] font-bold text-[#e05638]">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-cyan-500/15 border border-cyan-500/30">
+            <span className="font-display text-base font-black text-cyan-300">
               ₹{calculatedPrice}
             </span>
-            <span className="text-[11px] font-medium text-[#a8331a]/80">
+            <span className="text-[11px] font-semibold text-slate-400">
               / {currentQty} {product.unit}
             </span>
           </div>
 
-          <p className="mt-1 text-[10px] text-[#0e2a33]/40">
-            {product.harborOrigin ? product.harborOrigin.split('•')[0] : 'Fresh harbor catch'}
-          </p>
+          {/* Boat & Harbor provenance */}
+          {product.boatName && (
+            <p className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
+              <Anchor className="size-3 text-emerald-400 shrink-0" />
+              <span>{product.boatName} • {product.freshnessPercent || 98}% Fresh</span>
+            </p>
+          )}
         </div>
 
       </div>
 
       {/* Hand-Cut Preference for Fish */}
       {isFish && product.cutOptions && (
-        <div className="mt-2.5 pt-2 border-t border-[#0e2a33]/5">
+        <div className="mt-3 pt-2.5 border-t border-white/10">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-medium text-[#0e2a33]/60">Cut style:</span>
+            <span className="text-xs font-bold text-slate-300">Select Cut:</span>
             <select
               value={selectedCut}
               onChange={(e) => setSelectedCut(e.target.value)}
-              className="rounded-lg bg-[#f1f5f9] px-2 py-1 text-[11px] font-semibold text-[#0e2a33] ring-1 ring-[#0e2a33]/10 outline-none"
+              className="rounded-xl bg-slate-950 px-2.5 py-1 text-xs font-bold text-cyan-300 border border-white/10 outline-none"
             >
               {product.cutOptions.map((cut) => (
                 <option key={cut} value={cut}>
@@ -106,21 +124,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       )}
 
       {/* Bottom Controls Row */}
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3 flex items-center justify-between gap-2 pt-2 border-t border-white/5">
         
         {/* Weight Stepper */}
         {isFish ? (
-          <div className="flex items-center rounded-full bg-[#e2e8f0] ring-1 ring-[#0e2a33]/15">
+          <div className="flex items-center rounded-2xl bg-slate-950 border border-white/10 p-1">
             <button
               aria-label="Less weight"
               onClick={() => setSelectedWeightIndex((prev) => Math.max(0, prev - 1))}
               disabled={selectedWeightIndex === 0}
-              className="grid size-9 place-items-center text-lg font-semibold text-[#0e2a33]/70 hover:text-[#0e2a33] disabled:opacity-30"
+              className="size-7 rounded-xl bg-slate-800 font-bold text-slate-200 hover:bg-slate-700 disabled:opacity-30 grid place-items-center"
             >
               −
             </button>
 
-            <span className="w-16 text-center text-sm font-semibold text-[#0e2a33]">
+            <span className="w-14 text-center text-xs font-black text-cyan-300">
               {weightSteps[selectedWeightIndex]} KG
             </span>
 
@@ -128,31 +146,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               aria-label="More weight"
               onClick={() => setSelectedWeightIndex((prev) => Math.min(weightSteps.length - 1, prev + 1))}
               disabled={selectedWeightIndex === weightSteps.length - 1}
-              className="grid size-9 place-items-center text-lg font-semibold text-[#e05638] disabled:opacity-30"
+              className="size-7 rounded-xl bg-cyan-500 text-slate-950 font-black hover:bg-cyan-400 disabled:opacity-30 grid place-items-center"
             >
               +
             </button>
           </div>
         ) : (
-          <span className="text-xs font-semibold text-[#0e2a33]/70">1 Pack</span>
+          <span className="text-xs font-bold text-slate-400">1 Pack</span>
         )}
 
         {/* Add Button */}
         <button
           disabled={!product.isAvailable}
           onClick={handleAdd}
-          className={`rounded-full px-4 py-2 font-display text-[13px] font-semibold ring-1 transition-transform active:scale-95 disabled:opacity-40 ${
+          className={`flex-1 py-2.5 rounded-2xl font-display text-xs font-black transition-all active:scale-95 disabled:opacity-40 flex items-center justify-center gap-1.5 ${
             addedAnimation
-              ? 'bg-emerald-600 text-white ring-emerald-600'
-              : 'bg-[#e05638] text-white ring-[#e05638] hover:bg-[#c9472b]'
+              ? 'bg-emerald-500 text-slate-950'
+              : 'bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 hover:brightness-110 shadow-lg shadow-cyan-500/20'
           }`}
         >
           {addedAnimation ? (
-            <span className="flex items-center gap-1"><Check className="size-3.5 stroke-[3]" /> Added</span>
+            <span className="flex items-center gap-1"><Check className="size-4 stroke-[3]" /> Added</span>
           ) : product.isAvailable ? (
-            'Add'
+            'Add to Basket'
           ) : (
-            'Sold out'
+            'Sold Out'
           )}
         </button>
 
